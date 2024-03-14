@@ -39,8 +39,34 @@ class ValidateRawParameterData extends Test {
 		for (index => line in raw_parameter_data) {
 			if (line.message_type == "CC") {
 				var number = Std.parseInt(line.control_number);
-				if(number == null){
+				if (number == null) {
 					invalid_line_indexes.push(index);
+				}
+			}
+		}
+
+		Assert.equals(0, invalid_line_indexes.length);
+
+		if (invalid_line_indexes.length > 0) {
+			trace('check these lines:');
+			trace(invalid_line_indexes);
+		}
+	}
+
+	function test_nrpn_control_number_is_valid() {
+		var invalid_line_indexes:Array<Int> = [];
+
+		for (index => line in raw_parameter_data) {
+			if (line.message_type == "NRPN") {
+				var numbers = line.control_number.split(":");
+				if (numbers.length != 2) {
+					invalid_line_indexes.push(index);
+				} else {
+					for (number in numbers) {
+						if (Std.parseInt(number) == null) {
+							invalid_line_indexes.push(index);
+						}
+					}
 				}
 			}
 		}
