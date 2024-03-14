@@ -1,0 +1,8 @@
+--class-path test
+--class-path lib
+-lib utest
+-main UnitTests
+-D no-deprecation-warnings
+
+--resource assets/circuit-midi-parameters-pasted-from-pdf.csv@CircuitParametersFromPdf
+--interp
