@@ -29,7 +29,7 @@ class ValidateRawParameterData extends Test {
 		Assert.equals(0, invalid_line_indexes.length);
 
 		if (invalid_line_indexes.length > 0) {
-			trace('check these lines:');
+			trace('!message_type_is_cc_or_nrpn check these lines:');
 			trace(invalid_line_indexes);
 		}
 	}
@@ -60,7 +60,7 @@ class ValidateRawParameterData extends Test {
 		Assert.equals(0, invalid_line_indexes.length);
 
 		if (invalid_line_indexes.length > 0) {
-			trace('check these lines:');
+			trace('!cc_control_number_is_valid check these lines:');
 			trace(invalid_line_indexes);
 		}
 	}
@@ -97,7 +97,58 @@ class ValidateRawParameterData extends Test {
 		Assert.equals(0, invalid_line_indexes.length);
 
 		if (invalid_line_indexes.length > 0) {
-			trace('check these lines:');
+			trace('!nrpn_control_number_is_valid check these lines:');
+			trace(invalid_line_indexes);
+		}
+	}
+
+	function test_range_is_valid() {
+		var invalid_line_indexes:Array<Int> = [];
+
+		for (index => line in raw_parameter_data) {
+			var line_index = index + line_index_offset;
+			var ranges = extract_range(line.range);
+
+			// there needs to be at least 1 range but no more than 2
+			if (ranges.length < 1 || ranges.length > 2) {
+				invalid_line_indexes.push(line_index);
+			}
+
+			var midi_range = ranges[0];
+
+			// need 2 values for range (start and end)
+			if (midi_range.length < 2) {
+				invalid_line_indexes.push(line_index);
+			}
+
+			for (i in midi_range) {
+				// MIDI value cannot be null, less than 0 or more than 127
+				if (i == null || i < 0 || i > 127) {
+					invalid_line_indexes.push(line_index);
+				}
+			}
+
+			if (ranges.length > 1) {
+				var display_range = ranges[1];
+			
+				// need 2 values for range (start and end)
+				if (display_range.length < 2) {
+					invalid_line_indexes.push(line_index);
+				}
+
+				for (i in display_range) {
+					// display value cannot be null, less than -127 or more than 127
+					if (i == null || i < -127 || i > 127) {
+						invalid_line_indexes.push(line_index);
+					}
+				}
+			}
+		}
+
+		Assert.equals(0, invalid_line_indexes.length);
+
+		if (invalid_line_indexes.length > 0) {
+			trace('!range_is_valid check these lines:');
 			trace(invalid_line_indexes);
 		}
 	}

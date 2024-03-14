@@ -23,11 +23,32 @@ class PdfDataFormat {
 	}
 }
 
-inline function extract_cc_control_number(data:String):Int{
+inline function extract_cc_control_number(data:String):Int {
 	return Std.parseInt(data);
 }
 
-inline function extract_nrpn_control_numbers(data:String):Array<Int>{
+inline function extract_nrpn_control_numbers(data:String):Array<Int> {
 	var numbers = data.split(":");
-	return [for(item in numbers) Std.parseInt(item)];
+	return [for (item in numbers) Std.parseInt(item)];
+}
+
+inline function strip_empty_space(text:String):String {
+	return StringTools.replace(text, " ", "");
+}
+
+inline function strip_closing_parenthesis(text:String):String {
+	return StringTools.replace(text, ")", "");
+}
+
+inline function extract_range(data:String):Array<Array<Int>> {
+	var range_numbers:Array<Array<Int>> = [];
+	var parts = strip_empty_space(data).split("(");
+	var range_data:Array<Int> = [for (text in parts[0].split(":")) Std.parseInt(text)];
+	range_numbers.push(range_data);
+	if (parts.length > 1) {
+		var range_data_display:Array<Int> = [for (text in parts[1].split(":")) Std.parseInt(strip_closing_parenthesis(text))];
+		range_numbers.push(range_data_display);
+	}
+
+	return range_numbers;
 }
