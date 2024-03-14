@@ -152,4 +152,24 @@ class ValidateRawParameterData extends Test {
 			trace(invalid_line_indexes);
 		}
 	}
+
+	function test_default_is_valid() {
+		var invalid_line_indexes:Array<Int> = [];
+
+		for (index => line in raw_parameter_data) {
+			var line_index = index + line_index_offset;
+
+			var default_value = extract_default(line.default_value);
+			if (default_value == null) {
+				invalid_line_indexes.push(line_index);
+			}
+		}
+
+		Assert.equals(0, invalid_line_indexes.length);
+
+		if (invalid_line_indexes.length > 0) {
+			trace('!default_is_valid check these lines:');
+			trace(invalid_line_indexes);
+		}
+	}
 }

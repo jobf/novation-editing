@@ -52,3 +52,9 @@ inline function extract_range(data:String):Array<Array<Int>> {
 
 	return range_numbers;
 }
+
+inline function extract_default(data:String):Int{
+	var cleansed_data = strip_empty_space(data);
+	var parts = cleansed_data.split("(");
+	return Std.parseInt(parts[0]);
+}
