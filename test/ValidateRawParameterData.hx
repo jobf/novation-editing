@@ -1,4 +1,4 @@
-import ParameterParsing.PdfDataFormat;
+import ParameterParsing;
 import haxe.Resource;
 import utest.Assert;
 import utest.Test;
@@ -20,8 +20,9 @@ class ValidateRawParameterData extends Test {
 		var invalid_line_indexes:Array<Int> = [];
 
 		for (index => line in raw_parameter_data) {
+			var line_index = index + line_index_offset;
 			if (line.message_type != "CC" && line.message_type != "NRPN") {
-				invalid_line_indexes.push(index + line_index_offset);
+				invalid_line_indexes.push(line_index);
 			}
 		}
 
@@ -37,10 +38,21 @@ class ValidateRawParameterData extends Test {
 		var invalid_line_indexes:Array<Int> = [];
 
 		for (index => line in raw_parameter_data) {
+			var line_index = index + line_index_offset;
 			if (line.message_type == "CC") {
-				var number = Std.parseInt(line.control_number);
-				if (number == null) {
-					invalid_line_indexes.push(index);
+				var control_number = extract_cc_control_number(line.control_number);
+				if (control_number == null) {
+					invalid_line_indexes.push(line_index);
+				}
+
+				// midi cc cannot be greater than 127
+				if (control_number > 127) {
+					invalid_line_indexes.push(line_index);
+				}
+
+				// midi cc cannot be less than 127
+				if (control_number < 0) {
+					invalid_line_indexes.push(line_index);
 				}
 			}
 		}
@@ -57,16 +69,27 @@ class ValidateRawParameterData extends Test {
 		var invalid_line_indexes:Array<Int> = [];
 
 		for (index => line in raw_parameter_data) {
+			var line_index = index + line_index_offset;
 			if (line.message_type == "NRPN") {
-				var numbers = line.control_number.split(":");
-				if (numbers.length != 2) {
-					invalid_line_indexes.push(index);
-				} else {
-					for (number in numbers) {
-						if (Std.parseInt(number) == null) {
-							invalid_line_indexes.push(index);
+				var numbers = extract_nrpn_control_numbers(line.control_number);
+				if (numbers.length == 2) {
+					for (control_number in numbers) {
+						if (control_number == null) {
+							invalid_line_indexes.push(line_index);
+						}
+
+						// midi nrpn cannot be greater than 16383
+						if (control_number > 16383) {
+							invalid_line_indexes.push(line_index);
+						}
+
+						// midi nrpn cannot be less than 127
+						if (control_number < 0) {
+							invalid_line_indexes.push(line_index);
 						}
 					}
+				} else {
+					invalid_line_indexes.push(line_index);
 				}
 			}
 		}

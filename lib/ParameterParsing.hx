@@ -22,3 +22,12 @@ class PdfDataFormat {
 		}
 	}
 }
+
+inline function extract_cc_control_number(data:String):Int{
+	return Std.parseInt(data);
+}
+
+inline function extract_nrpn_control_numbers(data:String):Array<Int>{
+	var numbers = data.split(":");
+	return [for(item in numbers) Std.parseInt(item)];
+}
