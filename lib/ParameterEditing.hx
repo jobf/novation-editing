@@ -11,9 +11,15 @@ class ParameterEdit {
 	var description:String;
 	var type:MessageType;
 	var control_number:Array<Int>;
+	var range_display_offset:Int;
+
 
 	static function from_pdf_data(data:PdfDataFormat):ParameterEdit {
 		var range = extract_range(data.range);
+		var range_display_offset = 0;
+		if(range.length > 1){
+			range_display_offset = range[0][0] + (range[1][0] * -1);
+		}
 
 		var message_type:MessageType = switch data.message_type {
 			case "CC": CC;
@@ -32,11 +38,16 @@ class ParameterEdit {
 			section: data.section,
 			minimum_value: range[0][0],
 			maximum_value: range[0][1],
+			range_display_offset: range_display_offset, 
 			default_value: default_value,
 			description: data.notes,
 			type: message_type,
 			control_number: control_number,
 		}
+	}
+
+	public function offset_display_value(displayed_value:Int):Int {
+		return displayed_value - range_display_offset;
 	}
 }
 
