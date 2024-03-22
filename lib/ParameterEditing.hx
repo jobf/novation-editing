@@ -12,12 +12,23 @@ class ParameterEdit {
 	var type:MessageType;
 	var control_number:Array<Int>;
 	var range_display_offset:Int;
+	var value(default, set):Int = 0;
 
+	function set_value(next:Int):Int {
+		if (next > maximum_value) {
+			value = maximum_value;
+		} else if (next < minimum_value) {
+			value = minimum_value;
+		} else {
+			value = next;
+		}
+		return value;
+	}
 
 	static function from_pdf_data(data:PdfDataFormat):ParameterEdit {
 		var range = extract_range(data.range);
 		var range_display_offset = 0;
-		if(range.length > 1){
+		if (range.length > 1) {
 			range_display_offset = range[0][0] + (range[1][0] * -1);
 		}
 
@@ -38,11 +49,12 @@ class ParameterEdit {
 			section: data.section,
 			minimum_value: range[0][0],
 			maximum_value: range[0][1],
-			range_display_offset: range_display_offset, 
+			range_display_offset: range_display_offset,
 			default_value: default_value,
 			description: data.notes,
 			type: message_type,
 			control_number: control_number,
+			value: default_value
 		}
 	}
 
