@@ -5,4 +5,6 @@
 -D no-deprecation-warnings
 
 --resource assets/circuit-midi-parameters-pasted-from-pdf.csv@CircuitParametersFromPdf
+--resource assets/circuit-sysex-patch-format.csv@CircuitSysExPatchCsv
+
 --interp
