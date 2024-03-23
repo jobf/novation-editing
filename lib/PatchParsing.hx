@@ -1,3 +1,5 @@
+import StringUtils;
+
 @:publicFields
 @:structInit
 class PatchCsvFormat {
@@ -20,6 +22,19 @@ class PatchCsvFormat {
 	}
 }
 
-inline function extract_defined(data:String):Int{
+inline function extract_7_bit_int(data:String):Int {
 	return Std.parseInt(data);
+}
+
+inline function extract_bit_shift(data:String):Array<Int> {
+	var cleaned = strip_all_parenthesis(data);
+	var parts = cleaned.split(":");
+	if (parts[0] == "bits") {
+		// we are parsing a range
+		var range = parts[1].split("-");
+		var start = Std.parseInt(range[0]);
+		var end = Std.parseInt(range[1]) + 1;
+		return [for (i in start...end) i];
+	}
+	return [Std.parseInt(parts[1])];
 }

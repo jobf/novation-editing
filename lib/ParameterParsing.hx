@@ -1,3 +1,5 @@
+import StringUtils;
+
 @:structInit
 @:publicFields
 class ParameterCsvFormat {
@@ -35,7 +37,6 @@ class ParameterCsvFormat {
 	}
 }
 
-
 inline function extract_cc_control_number(data:String):Int {
 	return Std.parseInt(data);
 }
@@ -43,14 +44,6 @@ inline function extract_cc_control_number(data:String):Int {
 inline function extract_nrpn_control_numbers(data:String):Array<Int> {
 	var numbers = data.split(":");
 	return [for (item in numbers) Std.parseInt(item)];
-}
-
-inline function strip_empty_space(text:String):String {
-	return StringTools.replace(text, " ", "");
-}
-
-inline function strip_closing_parenthesis(text:String):String {
-	return StringTools.replace(text, ")", "");
 }
 
 inline function extract_range(data:String):Array<Array<Int>> {
@@ -66,7 +59,7 @@ inline function extract_range(data:String):Array<Array<Int>> {
 	return range_numbers;
 }
 
-inline function extract_default(data:String):Int{
+inline function extract_default(data:String):Int {
 	var cleansed_data = strip_empty_space(data);
 	var parts = cleansed_data.split("(");
 	return Std.parseInt(parts[0]);
