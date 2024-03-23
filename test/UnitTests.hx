@@ -8,6 +8,7 @@ function main() {
 	runner.addCase(new ValidateRawParameterData());
 	runner.addCase(new ParameterEditingTests());
 	runner.addCase(new ValidateRawPatchData());
+	runner.addCase(new PatchEditingTests());
 	Report.create(runner);
 	runner.run();
 }
