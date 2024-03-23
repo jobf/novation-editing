@@ -25,7 +25,7 @@ class ParameterEdit {
 		return value;
 	}
 
-	static function from_pdf_data(data:PdfDataFormat):ParameterEdit {
+	static function from_pdf_data(data:ParameterCsvFormat):ParameterEdit {
 		var range = extract_range(data.range);
 		var range_display_offset = 0;
 		if (range.length > 1) {

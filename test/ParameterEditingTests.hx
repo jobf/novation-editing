@@ -5,7 +5,7 @@ import utest.Test;
 
 class ParameterEditingTests extends Test {
 	function test_cc_parameter_from_pdf_data() {
-		var pdf_data:PdfDataFormat = {
+		var pdf_data:ParameterCsvFormat = {
 			section: "Voice",
 			parameter: "Polyphony Mode",
 			message_type: "CC",
@@ -28,7 +28,7 @@ class ParameterEditingTests extends Test {
 	}
 
 	function test_nrpn_parameter_from_pdf_data() {
-		var pdf_data:PdfDataFormat = {
+		var pdf_data:ParameterCsvFormat = {
 			section: "LFO",
 			parameter: "lfo 1 slew rate",
 			message_type: "NRPN",
@@ -52,7 +52,7 @@ class ParameterEditingTests extends Test {
 	}
 
 	function test_display_range_minus_12() {
-		var pdf_data:PdfDataFormat = {
+		var pdf_data:ParameterCsvFormat = {
 			section: "Voice",
 			parameter: "Pre-Glide",
 			message_type: "CC",
@@ -69,7 +69,7 @@ class ParameterEditingTests extends Test {
 	}
 
 	function test_display_range_minus_6() {
-		var pdf_data:PdfDataFormat = {
+		var pdf_data:ParameterCsvFormat = {
 			section: "Voice",
 			parameter: "Keyboard Octave",
 			message_type: "CC",

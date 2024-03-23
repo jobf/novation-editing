@@ -1,6 +1,6 @@
 @:structInit
 @:publicFields
-class PdfDataFormat {
+class ParameterCsvFormat {
 	var section:String;
 	var parameter:String;
 	var message_type:String;
@@ -9,7 +9,7 @@ class PdfDataFormat {
 	var default_value:String;
 	var notes:String;
 
-	static function from_line(csv_line:String):PdfDataFormat {
+	static function from_line(csv_line:String):ParameterCsvFormat {
 		var columns = CSV.to_columns(csv_line);
 		return {
 			section: columns[0],
@@ -21,7 +21,20 @@ class PdfDataFormat {
 			notes: columns[6]
 		}
 	}
+
+	static function from_row(columns:Array<String>):ParameterCsvFormat {
+		return {
+			section: columns[0],
+			parameter: columns[1],
+			message_type: columns[2],
+			control_number: columns[3],
+			range: columns[4],
+			default_value: columns[5],
+			notes: columns[6]
+		}
+	}
 }
+
 
 inline function extract_cc_control_number(data:String):Int {
 	return Std.parseInt(data);

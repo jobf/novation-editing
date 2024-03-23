@@ -5,7 +5,7 @@ import utest.Test;
 
 class ValidateRawParameterData extends Test {
 	var csv_lines:Array<String>;
-	var raw_parameter_data:Array<PdfDataFormat>;
+	var raw_parameter_data:Array<ParameterCsvFormat>;
 	var line_index_offset:Int;
 
 	function setupClass() {
@@ -13,7 +13,7 @@ class ValidateRawParameterData extends Test {
 		var csv_lines = CSV.to_lines(csv_file_contents);
 		var header_line_count = 1;
 		line_index_offset = header_line_count + 1;
-		raw_parameter_data = [for (line in csv_lines) PdfDataFormat.from_line(line)].slice(header_line_count);
+		raw_parameter_data = [for (line in csv_lines) ParameterCsvFormat.from_line(line)].slice(header_line_count);
 	}
 
 	function test_message_type_is_cc_or_nrpn() {
