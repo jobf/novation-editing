@@ -7,6 +7,7 @@ function main() {
 	runner.addCase(new ValidateCsvFileContents());
 	runner.addCase(new ValidateRawParameterData());
 	runner.addCase(new ParameterEditingTests());
+	runner.addCase(new ValidateRawPatchData());
 	Report.create(runner);
 	runner.run();
 }
