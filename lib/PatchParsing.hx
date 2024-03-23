@@ -19,3 +19,7 @@ class PatchCsvFormat {
 		}
 	}
 }
+
+inline function extract_defined(data:String):Int{
+	return Std.parseInt(data);
+}
